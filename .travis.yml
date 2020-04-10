@@ -1,4 +1,11 @@
+language: minimal
 sudo: required
-services:
-  - docker
-script: docker run -v $PWD:/mnt/howto -w /mnt/howto -e encrypted_1f9369ab557d_key=$encrypted_1f9369ab557d_key -e encrypted_1f9369ab557d_iv=$encrypted_1f9369ab557d_iv -e TRAVIS_BRANCH=$TRAVIS_BRANCH -e TRAVIS_PULL_REQUEST=$TRAVIS_PULL_REQUEST registry.fedoraproject.org/fedora:29 sh -c "dnf -y install make asciidoc dia git python2-ansi2html source-highlight m4 && ./build-gh-pages.sh"
+before_install:
+  # https://podman.io/getting-started/installation#ubuntu
+  - . /etc/os-release
+  - sudo sh -c "echo 'deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/ /' > /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list"
+  - curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/Release.key | sudo apt-key add -
+  - sudo apt-get update -qq
+  - sudo apt-get -qq -y install podman
+script:
+  - podman run --rm -it antora/antora

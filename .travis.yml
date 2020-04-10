@@ -1,6 +1,7 @@
 language: minimal
 sudo: required
 before_install:
+  - gpg2 --batch --passphrase '' --quick-gen-key test
   # https://podman.io/getting-started/installation#ubuntu
   - . /etc/os-release
   - sudo sh -c "echo 'deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/ /' > /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list"
